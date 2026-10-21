@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EVG</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Creepster&family=DM+Sans:wght@400;500;700&display=swap">
+
+<style>
+:root{
+  --bg:#0b0612;
+  --surface:#150c22;
+  --surface-2:#1d1130;
+  --line:#38225a;
+  --fg:#f4eeff;
+  --muted:#a99bc9;
+  --orange:#ff7a1a;
+  --green:#7dff3a;
+  --purple:#b44dff;
+  --pink:#ff2fa6;
+  --display:'Creepster','Impact',system-ui,sans-serif;
+  --head:'Barlow Condensed','Arial Narrow',Arial,sans-serif;
+  --body:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(900px 520px at 88% -4%, color-mix(in srgb,var(--purple) 22%,transparent), transparent 70%),
+    radial-gradient(700px 420px at -6% 30%, color-mix(in srgb,var(--orange) 10%,transparent), transparent 70%);
+  background-repeat:no-repeat;
+  color:var(--fg);
+  font:400 1rem/1.6 var(--body);
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0 0 auto;
+  height:env(safe-area-inset-top,0px);
+  background:var(--bg);
+  z-index:30;
+}
+img,svg{max-width:100%}
+h1,h2,h3,p{margin:0}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+
+.wrap{
+  width:100%;
+  max-width:1200px;
+  margin-inline:auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+
+/* Franja animada */
+.marquee{background:var(--orange);color:#1a0900;overflow:hidden;white-space:nowrap}
+.track{display:flex;width:max-content;animation:mq 34s linear infinite}
+.mq{
+  display:flex;
+  gap:2.25rem;
+  padding:.45rem 2.25rem .45rem 0;
+  font:700 .8125rem/1 var(--head);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.mq span::after{
+  content:"";
+  display:inline-block;
+  width:6px;
+  height:6px;
+  margin-left:2.25rem;
+  background:#1a0900;
+  transform:rotate(45deg);
+  vertical-align:middle;
+}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* Encabezado */
+.top{
+  position:sticky;
+  top:env(safe-area-inset-top,0px);
+  z-index:20;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.top .wrap{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  padding-block:.6rem;
+}
+.logo{
+  display:inline-flex;
+  align-items:center;
+  font:400 2rem/1 var(--display);
+  letter-spacing:.04em;
+  text-decoration:none;
+  color:var(--orange);
+  text-shadow:0 0 12px color-mix(in srgb,var(--orange) 70%,transparent);
+}
+.logo img{
+  display:block;
+  width:100px;
+  height:40px;
+  object-fit:contain;
+}
+.logo-fallback{display:none}
+.logo img:not([src]),.logo img[src=""]{display:none}
+
+/* Si el archivo no carga, se muestra EVG como texto */
+.logo img.broken{display:none}
+.logo img.broken + .logo-fallback{display:inline}
+
+.nav{display:flex;gap:1.75rem}
+.nav a{
+  font:600 .9375rem/1 var(--head);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  text-decoration:none;
+  color:var(--muted);
+  padding:.5rem 0;
+}
+.nav a:hover{color:var(--green)}
+
+/* Hero */
+.hero{padding-block:clamp(2rem,6vw,4.5rem) clamp(2.5rem,6vw,5rem)}
+.hero .wrap{
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:2rem;
+  align-items:center;
+}
+.eyebrow{
+  font:700 .8125rem/1 var(--head);
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--green);
+}
+.hero h1{
+  font:400 clamp(6rem,21vw,12.5rem)/.9 var(--display);
+  letter-spacing:.02em;
+  margin-top:1rem;
+  color:#ffe9d6;
+  text-shadow:0 0 6px var(--orange),0 0 22px var(--orange),0 0 54px color-mix(in srgb,var(--orange) 65%,transparent);
+}
+.flick{display:inline-block;animation:flick 5.5s steps(1,end) infinite}
+@keyframes flick{
+  0%,6%,9%,40%,43%,100%{opacity:1}
+  7%,41%{opacity:.25}
+  8%{opacity:.8}
+  42%{opacity:.4}
+}
+.hero h2{
+  font:700 clamp(1.5rem,3.4vw,2.25rem)/1.1 var(--head);
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  margin-top:1.25rem;
+  text-wrap:balance;
+}
+.hero p.lead{margin-top:1rem;max-width:34rem;color:var(--muted);font-size:1.0625rem}
+.cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.75rem}
+.btn{
+  display:inline-block;
+  text-decoration:none;
+  border-radius:3px;
+  padding:.8rem 1.4rem;
+  font:700 1rem/1 var(--head);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.btn.solid{
+  background:var(--orange);
+  color:#1a0900;
+  box-shadow:0 0 22px color-mix(in srgb,var(--orange) 50%,transparent);
+}
+.btn.solid:hover{background:#ff9a4d}
+.btn.line{border:1.5px solid var(--purple);color:var(--purple)}
+.btn.line:hover{background:var(--purple);color:#14041f}
+/* Logo grande del hero */
+.hero-logo{
+  position:relative;
+  width:100%;
+  max-width:520px;
+  aspect-ratio:1/1;
+  justify-self:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.hero-logo::before{
+  content:"";
+  position:absolute;
+  inset:6%;
+  border-radius:50%;
+  background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--orange) 34%,transparent),color-mix(in srgb,var(--purple) 8%,transparent) 62%,transparent 72%);
+}
+.hero-logo img{
+  position:relative;
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  filter:drop-shadow(0 0 22px color-mix(in srgb,var(--orange) 35%,transparent));
+}
+/* Si images/logo.png no existe, se ve este recuadro */
+.hero-logo-empty{
+  position:relative;
+  display:none;
+  width:66%;
+  height:40%;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  border:2px dashed var(--muted);
+  border-radius:6px;
+  color:var(--muted);
+  font:700 1.25rem/1.3 var(--head);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.bat{
+  fill:var(--bg);
+  stroke:var(--c);
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  filter:drop-shadow(0 0 5px var(--c));
+}
+.jt{fill:color-mix(in srgb,var(--c) 8%,transparent);stroke:var(--c);stroke-width:2}
+.jp{fill:#efe6d2}
+.jb{fill:var(--c)}
+.jc{fill:#cfc4aa}
+
+/* Secciones */
+section{scroll-margin-top:5.5rem}
+.sec{padding-block:clamp(2.5rem,6vw,4.5rem)}
+.sec-head{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:end;
+  justify-content:space-between;
+  gap:1rem 2rem;
+  margin-bottom:1.75rem;
+}
+.sec h2{
+  font:700 clamp(2rem,5vw,3.25rem)/1 var(--head);
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  text-wrap:balance;
+  margin-top:.6rem;
+}
+.count{
+  font:600 .9375rem/1 var(--head);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-variant-numeric:tabular-nums;
+}
+
+/* Guía */
+.guide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.tile{
+  text-align:left;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:4px;
+  padding:1.4rem;
+  display:flex;
+  flex-direction:column;
+  gap:.6rem;
+  min-width:0;
+  transition:border-color .2s,box-shadow .2s;
+}
+.tile:hover{
+  border-color:var(--c);
+  box-shadow:0 0 26px color-mix(in srgb,var(--c) 30%,transparent);
+}
+.tile .dot{
+  width:14px;height:14px;border-radius:50%;
+  background:var(--c);box-shadow:0 0 14px var(--c);
+}
+.tile h3{
+  font:700 1.75rem/1 var(--head);
+  letter-spacing:.05em;text-transform:uppercase;color:var(--c);
+}
+.tile p{color:var(--muted);font-size:.9375rem}
+.tile .go{
+  margin-top:auto;padding-top:.4rem;
+  font:700 .8125rem/1 var(--head);
+  letter-spacing:.16em;text-transform:uppercase;color:var(--fg);
+}
+
+/* Filtros */
+.filters{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{
+  background:transparent;border:1.5px solid var(--line);border-radius:99px;
+  padding:.5rem 1.1rem;font:700 .9375rem/1 var(--head);
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+}
+.chip:hover{border-color:var(--fg);color:var(--fg)}
+.chip[aria-pressed="true"]{
+  background:var(--purple);border-color:var(--purple);color:#14041f;
+  box-shadow:0 0 18px color-mix(in srgb,var(--purple) 50%,transparent);
+}
+
+/* Productos */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+@media (min-width:1000px){
+  .grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:1rem}
+}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:4px;
+  overflow:hidden;display:flex;flex-direction:column;min-width:0;
+  transition:border-color .2s,box-shadow .2s;
+}
+.card:hover{
+  border-color:var(--c);
+  box-shadow:0 0 0 1px var(--c),0 0 30px color-mix(in srgb,var(--c) 35%,transparent);
+}
+.art{
+  position:relative;aspect-ratio:1/1;max-width:100%;overflow:hidden;
+  background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--c) 30%,transparent),transparent 66%),var(--surface-2);
+  border-bottom:1px solid var(--line);
+}
+.art svg{display:block;width:100%;height:100%;filter:drop-shadow(0 0 7px color-mix(in srgb,var(--c) 75%,transparent))}
+.art .product-photo{display:block;width:100%;height:100%;object-fit:cover}
+.art .ic{fill:none;stroke:var(--c);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.tag{
+  position:absolute;top:.6rem;left:.6rem;background:var(--c);color:#12061f;
+  border-radius:99px;padding:.3rem .6rem;font:700 .6875rem/1 var(--head);
+  letter-spacing:.12em;text-transform:uppercase;
+}
+.body{display:flex;flex-direction:column;gap:.35rem;padding:.9rem .9rem 1rem;flex:1}
+.type{font:700 .75rem/1 var(--head);letter-spacing:.18em;text-transform:uppercase;color:var(--c)}
+.card h3{font:700 1.45rem/1.05 var(--head);letter-spacing:.03em;text-transform:uppercase;text-wrap:balance}
+.notes{color:var(--muted);font-size:.8125rem;line-height:1.45}
+.meta{
+  display:flex;flex-wrap:wrap;gap:.25rem .75rem;
+  font:600 .75rem/1.2 var(--head);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--fg);opacity:.8;margin-top:.15rem;
+}
+.buy{display:flex;align-items:center;margin-top:auto;padding-top:.8rem}
+.price{font:700 1.5rem/1 var(--head);letter-spacing:.02em;font-variant-numeric:tabular-nums}
+
+/* Nosotros */
+.about{border-block:1px solid var(--line);background:color-mix(in srgb,var(--surface) 70%,transparent)}
+.about .wrap{
+  display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
+  gap:2.5rem;align-items:start;
+}
+.about p{color:var(--muted);max-width:36rem;margin-top:1rem}
+.facts{display:grid;gap:.75rem;margin:0;padding:0;list-style:none}
+.facts li{
+  border:1px solid var(--line);border-left:3px solid var(--pink);
+  border-radius:3px;padding:.9rem 1.1rem;background:var(--surface);
+}
+.facts b{display:block;font:700 1.25rem/1.1 var(--head);letter-spacing:.06em;text-transform:uppercase}
+.facts span{color:var(--muted);font-size:.9375rem}
+
+/* Pie */
+.foot{padding-block:2.5rem 3rem}
+.foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.5rem 3rem}
+.foot .logo{font-size:2.5rem}
+.foot p{max-width:32rem;color:var(--muted);font-size:.875rem;margin-top:.6rem}
+.foot nav{display:flex;flex-direction:column;gap:.35rem}
+.foot nav a{
+  font:600 .9375rem/1.4 var(--head);letter-spacing:.14em;
+  text-transform:uppercase;text-decoration:none;color:var(--muted);
+}
+.foot nav a:hover{color:var(--green)}
+.legal{width:100%;border-top:1px solid var(--line);padding-top:1.25rem;font-size:.8125rem;color:var(--muted)}
+
+@media (max-width:860px){
+  .hero .wrap,.about .wrap{grid-template-columns:minmax(0,1fr)}
+  .hero-logo{max-width:380px}
+  .nav{display:none}
+}
+@media (max-width:640px){
+  .guide{grid-template-columns:minmax(0,1fr)}
+  .card h3{font-size:1.25rem}
+  .price{font-size:1.3rem}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .track,.flick{animation:none}
+}
+</style>
+</head>
+
+<body>
+<div class="marquee" role="region" aria-label="Avisos de la tienda">
+  <div class="track">
+    <div class="mq">
+      <span>Edición Halloween 2026</span>
+      <span>Envío gratis desde $12k</span>
+      <span>Lotes de calidad</span>
+      <span>Solo para adultos</span>
+    </div>
+    <div class="mq" aria-hidden="true">
+      <span>Edición Halloween 2026</span>
+      <span>Envío gratis desde $12k</span>
+      <span>Lotes de calidad</span>
+      <span>Solo para adultos</span>
+    </div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#inicio" aria-label="EVG, volver al inicio">
+      <img src="images/logo.png" alt="EVG"
+           onerror="this.classList.add('broken')">
+      <span class="logo-fallback">EVG</span>
+    </a>
+
+    <nav class="nav" aria-label="Principal">
+      <a href="#coleccion">Colección</a>
+      <a href="#guia">Efectos</a>
+      <a href="#nosotros">Nosotros</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Colección de temporada</p>
+        <h1 aria-label="EVG">E<span class="flick">V</span>G</h1>
+        <h2>Este Halloween, el único susto será quedarse sin moño.</h2>
+        <p class="lead">¡Cuidado, te asustas con lo rápido que llegamos!</p>
+        <div class="cta">
+          <a class="btn solid" href="#coleccion">Ver colección</a>
+          <a class="btn line" href="#guia">Elegir por efecto</a>
+        </div>
+      </div>
+      <div class="hero-logo">
+        <img src="images/logo.png" alt="EVG"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="hero-logo-empty">Tu logo aquí<br>images/logo.png</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="guia">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">¿De qué me antojo?</p>
+          <h2>Elige tu noche</h2>
+        </div>
+      </div>
+      <div class="guide">
+        <button class="tile" type="button" data-filter="Sativa" style="--c:var(--orange)">
+          <span class="dot"></span><h3>Sativa</h3>
+          <p>Cabeza clara y ganas de salir. Para empezar la noche.</p>
+          <span class="go">Ver sativas</span>
+        </button>
+        <button class="tile" type="button" data-filter="Híbrida" style="--c:var(--green)">
+          <span class="dot"></span><h3>Híbrida</h3>
+          <p>Un poco de cada una. Para toda la fiesta.</p>
+          <span class="go">Ver híbridas</span>
+        </button>
+        <button class="tile" type="button" data-filter="Indica" style="--c:var(--purple)">
+          <span class="dot"></span><h3>Índica</h3>
+          <p>Cuerpo pesado y mente quieta. Para cerrar la noche.</p>
+          <span class="go">Ver índicas</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="coleccion" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Edición Halloween</p>
+          <h2>La colección</h2>
+        </div>
+        <p class="count" id="shown" aria-live="polite"></p>
+      </div>
+      <div class="filters" id="filters" role="group" aria-label="Filtrar por tipo" style="margin-bottom:1.5rem">
+        <button class="chip" type="button" data-filter="Todas" aria-pressed="true">Todas</button>
+        <button class="chip" type="button" data-filter="Sativa" aria-pressed="false">Sativa</button>
+        <button class="chip" type="button" data-filter="Híbrida" aria-pressed="false">Híbrida</button>
+        <button class="chip" type="button" data-filter="Indica" aria-pressed="false">Índica</button>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section class="sec about" id="nosotros">
+    <div class="wrap">
+      <div>
+        <h2>Lotes pequeños. Noches largas.</h2>
+        <p>EVG empezó con una idea simple: un pre-roll que se vea tan bien como se fuma. Cada sabor de esta edición lleva el nombre de algo que aparece solo en octubre.</p>
+      </div>
+      <ul class="facts">
+        <li><b>Flor seleccionada a mano</b><span>Cada lote se revisa antes de llenar el cono.</span></li>
+        <li><b>Papel natural sin blanquear</b><span>Combustión pareja y sin sabores raros.</span></li>
+        <li><b>Tubo hermético</b><span>Pre-rolls protegidos del aire y la luz.</span></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div>
+      <a class="logo" href="#inicio" aria-label="EVG, volver arriba">EVG</a>
+      <p>Productos para adultos. Consume con responsabilidad, no conduzcas y mantén el producto fuera del alcance de menores.</p>
+    </div>
+    <nav aria-label="Pie de página">
+      <a href="#coleccion">Colección</a>
+      <a href="#guia">Efectos</a>
+      <a href="#nosotros">Nosotros</a>
+    </nav>
+    <p class="legal">© 2026 EVG.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+ var PRODUCTS=[
+  {name:'HoneyPuff',type:'Sativa',color:'#ff7a1a',icon:'pumpkin',image:'images/pumpkin-haze.jpg',thc:100 , size:'1 × 3 g',price:12,notes:'Conos pre-enrollados con boquilla de madera dorada que suaviza cada pasada. 3 Sabores increibles: chocolate, mango y blueberry Incluyen tubo de vidrio portátil para conservar la frescura y prensador de madera.',tag:'Más vendido'},
+  {name:'Raw',type:'Híbrida',color:'#5dff4a',icon:'ghost',image:'images/ghoul-gas.jpg',thc:100 , size:'1 × 2 g',price:12,notes:'Disfruta de una experiencia pura e inigualable con los conos pre enrollados RAW. Elaborados con cáñamo orgánico 100% natural y sin refinarse.',tag:'Venta por 3'},
+  {name:"Baby Griselda",type:'Indica',color:'#b44dff',icon:'hat',image:'images/witchs-brew.jpg',thc:100 , size:'1 × 4 g',price:60,notes:'Rellenas con flores premium, diamantes y hash, Diseñadas para quemar de manera parejo y suave en cada pasada. Boquilla de vidrio Ofrece un flujo de aire óptimo y mantiene la frescura e intensidad del sabor.'},
+  {name:'Sluggers x Backpack Boys LCZ JUICED',type:'Indica',color:'#1affc6',icon:'skull',image:'images/zombie-kush.jpg',thc:100 , size:'1 × 3.5 g',price:260,notes:'De la icónica línea All Star, llega este híbrido pegador que combina dos verdaderas leyendas: Lemon Cherry Gelato x Z. Prepárate para una ráfaga de sabores dulces, frutales y cítricos, con toques inolvidables de cereza y limón desde la primera inhalación.'},
+  {name:'Pink Lemonade X Pink Acai Dual',type:'Híbrida',color:'#ff2fa6',icon:'bat',image:'images/vampire-kiss.jpg',thc:100 , size:'1 × 2 g',price:260,notes:'¡Dos sabores increíbles en un solo dispositivo de 2 gramos! Disfruta de la combinación perfecta entre la frescura cítrica y dulce de Pink Lemonade y las notas tropicales y afrutadas de Pink Acai. Con su sistema dual, puedes alternar entre perfiles de sabor suave, refrescante y lleno de potencia en cualquier momento.',tag:'Edición limitada'},
+  {name:'Promo blunt Wrap',type:'Híbrida',color:'#ffc21a',icon:'candy',image:'images/candy-corn.jpg',thc:100 , size:'3 × 9 g',price:14,notes:'Lévate 3 Blunts de Blunt Wrap al mejor precio y dale un toque único a tus sesiones. Elaborados con las hojas más frescas y resistentes para un liado perfecto, combustión lenta y un sabor intenso de principio a fin. ¡Combina tus sabores favoritos y aprovecha la oferta antes de que se agoten!',tag:'Más vendido'}
+];
+
+
+  var filter='Todas';
+
+  function joint(){
+    return '<rect class="jt" x="-70" y="-14" width="140" height="28" rx="14"/>'+
+      '<rect class="jc" x="-66" y="-6" width="8" height="12" rx="2"/>'+
+      '<polygon class="jp" points="-58,-5 50,-8 50,8 -58,5"/>'+
+      '<rect class="jb" x="14" y="-8" width="7" height="16"/>'+
+      '<rect class="jb" x="50" y="-8" width="10" height="16" rx="3"/>';
+  }
+
+  function art(p){
+    return '<img class="product-photo" src="'+p.image+'" alt="'+p.name+'" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'">'+
+      '<svg viewBox="0 0 200 200" role="img" aria-label="'+p.name+'" style="display:none">'+
+      '<use class="ic" href="#i-'+p.icon+'" x="58" y="4" width="84" height="84"/>'+
+      '<g transform="translate(100 130) rotate(-18)">'+joint()+'</g></svg>';
+  }
+
+  function card(p){
+    return '<article class="card" style="--c:'+p.color+'"><div class="art">'+art(p)+
+      (p.tag?'<span class="tag">'+p.tag+'</span>':'')+'</div><div class="body">'+
+      '<p class="type">'+p.type+'</p><h3>'+p.name+'</h3><p class="notes">'+p.notes+'</p>'+
+      '<p class="meta"><span>THC '+p.thc+'%</span><span>'+p.size+'</span></p>'+
+      '<div class="buy"><span class="price">$'+p.price.toFixed(2)+'</span></div></div></article>';
+  }
+
+  function render(){
+    var list=PRODUCTS.filter(function(p){
+      return filter==='Todas'||p.type===filter;
+    });
+
+    document.querySelector('#grid').innerHTML=list.map(card).join('');
+    document.querySelector('#shown').textContent=list.length+' productos';
+
+    document.querySelectorAll('#filters .chip').forEach(function(b){
+      b.setAttribute('aria-pressed',b.dataset.filter===filter?'true':'false');
+    });
+  }
+
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('button');
+    if(!b||!b.dataset.filter)return;
+
+    filter=b.dataset.filter;
+    render();
+
+    if(b.classList.contains('tile')){
+      document.querySelector('#coleccion').scrollIntoView();
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
